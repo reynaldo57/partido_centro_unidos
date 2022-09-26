@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:partido_centro_unidos/common/colors.dart';
 import 'package:partido_centro_unidos/common/typography.dart';
-import 'package:partido_centro_unidos/pages/ProductDetailPage.dart';
-import 'package:partido_centro_unidos/pages/AdminPage.dart';
+import 'package:partido_centro_unidos/pages/product_detail_page.dart';
+import 'package:partido_centro_unidos/pages/admin_page.dart';
+import 'package:partido_centro_unidos/services/firebase_service.dart';
 import 'package:partido_centro_unidos/widgets/admin_widget.dart';
 import 'package:partido_centro_unidos/widgets/comite_ejecutivo_widget.dart';
 import 'package:partido_centro_unidos/widgets/text_normal_widget.dart';
@@ -10,6 +11,9 @@ import 'package:partido_centro_unidos/widgets/text_normal_widget.dart';
 
 
 class HomeCustomerPage extends StatelessWidget {
+
+  FirestoreService _administratorsFirestoreService = new FirestoreService(collection: "administrators");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +53,10 @@ class HomeCustomerPage extends StatelessWidget {
                         child: Container(),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // FirestoreService _firestoreService = new FirestoreService();
+                          // _firestoreService.getAdministrators();
+                        },
                         icon: Icon(
                           Icons.search,
                           color: Colors.white,
@@ -62,18 +69,29 @@ class HomeCustomerPage extends StatelessWidget {
                   height: 10.0,
                 ),
                 //categories
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Row(
-                    children: [
-                      AdminWidget(
-                        text: "Admin",
-                        primary: true,
-                        goTo: AdminPage(), // AQUI VA EL ADMIN PAGE
-                      ),
-
-                    ],
-                  ),
+                FutureBuilder(
+                  future: _administratorsFirestoreService.getAdministrators(),
+                  builder: (BuildContext, AsyncSnapshot snap){
+                    if(snap.hasData){
+                      List<Map<String, dynamic>> administrators = snap.data;
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: administrators.map<Widget>(
+                                (e) => AdminWidget(
+                                  text: e["description"],
+                                  primary: e["order"],
+                                  goTo: AdminPage(), // AQUI VA EL ADMIN PAGE
+                                ),
+                            ).toList(),
+                          ),
+                        ),
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator(),);
+                  },
                 ),
                 SizedBox(
                   height: 10.0,

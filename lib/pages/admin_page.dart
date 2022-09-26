@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partido_centro_unidos/widgets/AdminPageWidget.dart';
+import 'package:partido_centro_unidos/widgets/admin_page_widget.dart';
 
 class AdminPage extends StatelessWidget {
   @override

@@ -22,7 +22,7 @@ class AdminWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       child: FilterChip(
-        backgroundColor: primary ? BRAND_PRIMARY : BRAND_SECUNDARY,
+        backgroundColor: primary ? BRAND_PRIMARY : COLOR_FONT_PRIMARY,
         elevation: 0,
         shadowColor: Colors.transparent,
         side: BorderSide(width: 1, color: Colors.white),
