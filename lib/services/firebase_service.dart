@@ -21,4 +21,16 @@ class FirestoreService {
     });
     return administrators;
   }
+
+
+  Future<List<Map<String, dynamic>>> getContents({String? categooryId}) async{
+    List<Map<String, dynamic>> contents = [];
+    QuerySnapshot _collectionReference = await _firestoreReferences.where('category', isEqualTo:
+    categooryId).get();
+    _collectionReference.docs.forEach((QueryDocumentSnapshot element) {
+      Map<String, dynamic> content = element.data() as Map<String, dynamic>;
+      contents.add(content);
+    });
+    return contents;
+  }
 }

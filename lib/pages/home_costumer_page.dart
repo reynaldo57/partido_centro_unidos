@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:partido_centro_unidos/common/colors.dart';
 import 'package:partido_centro_unidos/common/typography.dart';
@@ -13,6 +15,7 @@ import 'package:partido_centro_unidos/widgets/text_normal_widget.dart';
 class HomeCustomerPage extends StatelessWidget {
 
   FirestoreService _administratorsFirestoreService = new FirestoreService(collection: "administrators");
+  FirestoreService _contentsFirestoreService = new FirestoreService(collection: 'contents');
 
   @override
   Widget build(BuildContext context) {
@@ -113,21 +116,28 @@ class HomeCustomerPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      ComiteEjecutivoWidget(
-                          image: "https://radiosantarosa.com.pe/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-22-at-2.49.51-PM.jpeg",
-                          title: "Gerwer Campero",
-                          subtitle: "Medico Cirujano",
-                          price: "45 Años",
-                          rate: "965876459",
-                          goTo: ProductDetailPage(),
-                      ),
-
-                    ],
-                  ),
+                FutureBuilder(
+                  future: _contentsFirestoreService.getContents(categooryId: "jdSej1WyRKsiFItGRKo9"),
+                  builder: (BuildContext context, AsyncSnapshot snap){
+                    if(snap.hasData){
+                      List<Map<String, dynamic>> contents = snap.data;
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: contents.map<Widget>((e) => ComiteEjecutivoWidget(
+                              image: e["image"],
+                              title: e["name"],
+                              subtitle: e["description"],
+                              price: e["cel"].toString(),
+                              rate: e["wp"].toString(),
+                              goTo: ProductDetailPage(),
+                          ),
+                          ).toList(),
+                        ),
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator(),);
+                  },
                 ),
 
                 SizedBox(
@@ -145,86 +155,28 @@ class HomeCustomerPage extends StatelessWidget {
                 SizedBox(
                   height: 20.0,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10.0, right: 14.0),
-                          constraints: BoxConstraints(maxWidth: 200.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 140.0,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    18.0,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: Offset(0, 4),
-                                      blurRadius: 10,
-                                      color: Colors.black12.withOpacity(
-                                        0.04,
-                                      ),
-                                    ),
-                                  ],
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        "https://radiosantarosa.com.pe/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-22-at-2.49.51-PM.jpeg"
-                                    ),
-                                ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              H1(text: "Gerwer Campero"),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              H2(text: "Abogado"),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  H2(text: "47 Años"),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        H2(text: "956987231"),
-                                        Icon(
-                                          Icons.phone,
-                                          size: 18.0,
-                                          color: Color(0xffED9B00),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                FutureBuilder(
+                  future: _contentsFirestoreService.getContents(categooryId: "9KNzH8Bv2ZenxmqlQiXZ"),
+                  builder: (BuildContext context, AsyncSnapshot snap){
+                    if(snap.hasData){
+                      List<Map<String, dynamic>> contents = snap.data;
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: contents.map<Widget>((e) => ComiteEjecutivoWidget(
+                            image: e["image"],
+                            title: e["name"],
+                            subtitle: e["description"],
+                            price: e["cel"].toString(),
+                            rate: e["wp"].toString(),
+                            goTo: ProductDetailPage(),
                           ),
+                          ).toList(),
                         ),
-                      ),
-
-                    ],
-                  ),
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator(),);
+                  },
                 ),
                 //section 2
                 SizedBox(
@@ -241,96 +193,28 @@ class HomeCustomerPage extends StatelessWidget {
                 SizedBox(
                   height: 20.0,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 10.0, right: 14.0),
-                        constraints: BoxConstraints(maxWidth: 200.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 140.0,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: Offset(0, 4),
-                                    blurRadius: 10,
-                                    color: Colors.black12.withOpacity(
-                                      0.04,
-                                    ),
-                                  ),
-                                ],
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      "https://portal.andina.pe/EDPfotografia3/Thumbnail/2020/11/03/000723678W.jpg"),
-                                ),
-                              ),
-                              // child: Stack(
-                              //   children: [
-                              //     Positioned(
-                              //       right: 0,
-                              //       child: Container(
-                              //         margin: EdgeInsets.symmetric(
-                              //             horizontal: 10.0, vertical: 4),
-                              //         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
-                              //         decoration: BoxDecoration(
-                              //             color: Color(0xffED9B00),
-                              //             borderRadius: BorderRadius.circular(26.0)
-                              //         ),
-                              //         child: Text(
-                              //           "-30% Desc",
-                              //           style: TextStyle(
-                              //             fontSize: 15.0,
-                              //             fontWeight: FontWeight.bold,
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     )
-                              //   ],
-                              // ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            H1(text: "Puno"),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            H2(text: "Alejandro Tipula"),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                H2(text: "45 Años"),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.phone,
-                                        size: H2_SIZE,
-                                        color: BRAND_PRIMARY
-                                      ),
-                                      H2(text: "9875632189"),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
+                FutureBuilder(
+                  future: _contentsFirestoreService.getContents(categooryId: "wwB53gc64jtOOSXGhtjS"),
+                  builder: (BuildContext context, AsyncSnapshot snap){
+                    if(snap.hasData){
+                      List<Map<String, dynamic>> contents = snap.data;
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: contents.map<Widget>((e) => ComiteEjecutivoWidget(
+                            image: e["image"],
+                            title: e["name"],
+                            subtitle: e["description"],
+                            price: e["cel"].toString(),
+                            rate: e["wp"].toString(),
+                            goTo: ProductDetailPage(),
+                          ),
+                          ).toList(),
                         ),
-                      ),
-                    ],
-                  ),
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator(),);
+                  },
                 ),
                 SizedBox(
                   height: 40.0,
